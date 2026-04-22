@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git config *)",
+      "Bash(gh auth *)",
+      "Bash(ssh-keygen -y -P \"\" -f ~/.ssh/id_ed25519)",
+      "Bash(ssh-keygen -t ed25519 -C \"zoraleta@gmail.com\" -f ~/.ssh/id_ed25519_personal -N \"\")",
+      "Bash(ssh -T -o StrictHostKeyChecking=accept-new git@github-personal)",
+      "Bash(echo \"---exit: $?---\")",
+      "Bash(git init *)",
+      "Bash(git remote *)",
+      "Bash(echo \"local user.name:  $\\(git config user.name\\)\")",
+      "Bash(echo \"local user.email: $\\(git config user.email\\)\")",
+      "Bash(echo \"remote origin:    $\\(git remote get-url origin\\)\")",
+      "WebFetch(domain:core.telegram.org)",
+      "mcp__supabase__list_tables",
+      "mcp__supabase__apply_migration",
+      "Bash(python -m py_compile bot.py config.py db.py handlers.py mentions.py)",
+      "WebFetch(domain:pypi.org)",
+      "Bash(python -c \"import urllib.request, json; data = json.loads\\(urllib.request.urlopen\\('https://pypi.org/pypi/psycopg-binary/json'\\).read\\(\\)\\); files = [f['filename'] for f in data['urls']]; print\\('Latest version:', data['info']['version']\\); print\\('cp314 files:'\\); [print\\(' ', f\\) for f in files if 'cp314' in f]\")",
+      "Bash(python -c \"import urllib.request, json; data = json.loads\\(urllib.request.urlopen\\('https://pypi.org/pypi/asyncpg/json'\\).read\\(\\)\\); files = [f['filename'] for f in data['urls']]; print\\('Latest version:', data['info']['version']\\); print\\('cp314 files:'\\); [print\\(' ', f\\) for f in files if 'cp314' in f]\")",
+      "mcp__supabase__execute_sql",
+      "Bash(python -m unittest test_mentions.py -v)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "supabase"
+  ]
+}
