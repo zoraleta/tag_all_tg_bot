@@ -5,11 +5,13 @@ from telethon import TelegramClient, events
 from members import MembersCache
 from mentions import build_mention_batches
 
-ALL_PATTERN = re.compile(r"(?<!\w)@all(?!\w)", re.IGNORECASE)
 
-
-def register_handlers(client: TelegramClient) -> None:
+def register_handlers(client: TelegramClient, bot_username: str) -> None:
     cache = MembersCache(client)
+    trigger_pattern = re.compile(
+        rf"(?<!\w)@(all|{re.escape(bot_username)})(?!\w)",
+        re.IGNORECASE,
+    )
 
     @client.on(events.ChatAction)
     async def on_chat_action(event):
@@ -21,7 +23,7 @@ def register_handlers(client: TelegramClient) -> None:
         if not event.is_group:
             return
         text = event.message.message
-        if not text or not ALL_PATTERN.search(text):
+        if not text or not trigger_pattern.search(text):
             return
         members = await cache.get(event.chat_id)
         batches = build_mention_batches(members, exclude_user_id=event.sender_id)

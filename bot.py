@@ -14,8 +14,9 @@ async def main() -> None:
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
     client = TelegramClient("tag_all_bot", API_ID, API_HASH)
-    register_handlers(client)
     await client.start(bot_token=BOT_TOKEN)
+    me = await client.get_me()
+    register_handlers(client, bot_username=me.username)
     try:
         await client.run_until_disconnected()
     finally:
