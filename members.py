@@ -8,7 +8,7 @@ Member = tuple[int, str | None, str | None]
 
 
 class MembersCache:
-    def __init__(self, client: TelegramClient, min_interval_seconds: float = 1.0) -> None:
+    def __init__(self, client: TelegramClient, min_interval_seconds: float = 2.5) -> None:
         self._client = client
         self._cache: dict[int, list[Member]] = {}
         self._chat_locks: dict[int, asyncio.Lock] = {}
