@@ -1,11 +1,11 @@
 import asyncio
 import logging
 
-from aiogram import Bot, Dispatcher
+import uvloop
+from telethon import TelegramClient
 
-from config import BOT_TOKEN
-from db import close_pool, init_pool
-from handlers import router
+from config import API_HASH, API_ID, BOT_TOKEN
+from handlers import register_handlers
 
 
 async def main() -> None:
@@ -13,19 +13,15 @@ async def main() -> None:
         level=logging.INFO,
         format="%(asctime)s %(levelname)s %(name)s: %(message)s",
     )
-    await init_pool()
-    bot = Bot(token=BOT_TOKEN)
-    dp = Dispatcher()
-    dp.include_router(router)
+    client = TelegramClient("tag_all_bot", API_ID, API_HASH)
+    register_handlers(client)
+    await client.start(bot_token=BOT_TOKEN)
     try:
-        await dp.start_polling(
-            bot,
-            allowed_updates=["message", "my_chat_member", "chat_member"],
-        )
+        await client.run_until_disconnected()
     finally:
-        await close_pool()
-        await bot.session.close()
+        await client.disconnect()
 
 
 if __name__ == "__main__":
+    uvloop.install()
     asyncio.run(main())
